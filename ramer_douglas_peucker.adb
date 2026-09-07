@@ -94,14 +94,14 @@ package body Ramer_Douglas_Peucker is
      (Points  : Point_Array;
       Epsilon : Distance) return Boolean_Array
    is
-      Mask : Boolean_Array (Points'Range) := (others => False);
+      Mask : Boolean_Array (Points'Range) := [others => False];
    begin
       if Points'Length = 0 then
          return Mask;
       end if;
 
       if Points'Length <= 2 then
-         Mask := (others => True);
+         Mask := [others => True];
          return Mask;
       end if;
 
@@ -170,7 +170,7 @@ package body Ramer_Douglas_Peucker is
          type Segment_Stack is array (1 .. Points'Length * 2 + 8) of Segment;
          Stack      : Segment_Stack;
          Stack_Top  : Natural := 0;
-         Mask       : Boolean_Array (Points'Range) := (others => False);
+         Mask       : Boolean_Array (Points'Range) := [others => False];
 
          procedure Push (S : Segment) is
          begin

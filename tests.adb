@@ -60,7 +60,7 @@ begin
    Put_Line ("TEST 3 — Empty and Single Element Input");
    declare
       Empty_Pts : Point_Array (1 .. 0);
-      Single_Pt : Point_Array (1 .. 1) := (1 => (X => 1.0, Y => 1.0));
+      Single_Pt : constant Point_Array (1 .. 1) := [1 => (X => 1.0, Y => 1.0)];
       Res_Empty : constant Point_Array := Simplify (Empty_Pts, 1.0);
       Res_Sing  : constant Point_Array := Simplify (Single_Pt, 1.0);
       Res_Iter  : constant Point_Array := Simplify_Iterative (Empty_Pts, 1.0);
@@ -74,7 +74,7 @@ begin
    Put_Line ("TEST 4 — Two-Point Segment (Boundary Case)");
    declare
       Line : constant Point_Array (1 .. 2) :=
-        ((X => 0.0, Y => 0.0), (X => 10.0, Y => 10.0));
+        [(X => 0.0, Y => 0.0), (X => 10.0, Y => 10.0)];
       Res1 : constant Point_Array := Simplify (Line, 5.0);
       Res2 : constant Point_Array := Simplify_Iterative (Line, 0.1);
       Mask : constant Boolean_Array := Simplify_Mask (Line, 1.0);
@@ -88,11 +88,11 @@ begin
    Put_Line ("TEST 5 — Collinear Points Elimination");
    declare
       Points : constant Point_Array (1 .. 5) :=
-        ((X => 0.0, Y => 0.0),
+        [(X => 0.0, Y => 0.0),
          (X => 2.0, Y => 2.0),
          (X => 4.0, Y => 4.0),
          (X => 6.0, Y => 6.0),
-         (X => 8.0, Y => 8.0));
+         (X => 8.0, Y => 8.0)];
       Res : constant Point_Array := Simplify (Points, 0.001);
    begin
       Check ("5.1 All interior collinear points simplified away", Res'Length = 2);
@@ -104,9 +104,9 @@ begin
    Put_Line ("TEST 6 — Single Peak Retention");
    declare
       Points : constant Point_Array (1 .. 3) :=
-        ((X => 0.0, Y => 0.0),
+        [(X => 0.0, Y => 0.0),
          (X => 5.0, Y => 5.0),
-         (X => 10.0, Y => 0.0));
+         (X => 10.0, Y => 0.0)];
       Res_Keep : constant Point_Array := Simplify (Points, 2.0);
       Res_Drop : constant Point_Array := Simplify (Points, 6.0);
    begin
@@ -120,9 +120,9 @@ begin
    Put_Line ("TEST 7 — Non-zero Array Bounds Compatibility");
    declare
       Points : constant Point_Array (10 .. 12) :=
-        ((X => 0.0, Y => 0.0),
+        [(X => 0.0, Y => 0.0),
          (X => 5.0, Y => 10.0),
-         (X => 10.0, Y => 0.0));
+         (X => 10.0, Y => 0.0)];
       Res : constant Point_Array := Simplify (Points, 1.0);
       Idx : constant Index_Array := Simplify_Indices (Points, 1.0);
    begin
@@ -135,13 +135,13 @@ begin
    Put_Line ("TEST 8 — Equivalence of Recursive and Iterative Variants");
    declare
       Points : constant Point_Array (1 .. 7) :=
-        ((X => 0.0, Y => 0.0),
+        [(X => 0.0, Y => 0.0),
          (X => 1.0, Y => 0.1),
          (X => 2.0, Y => -0.1),
          (X => 3.0, Y => 5.0),
          (X => 4.0, Y => 6.0),
          (X => 5.0, Y => 0.2),
-         (X => 6.0, Y => 0.0));
+         (X => 6.0, Y => 0.0)];
       Rec_Res  : constant Point_Array := Simplify (Points, 1.0);
       Iter_Res : constant Point_Array := Simplify_Iterative (Points, 1.0);
       Same_Len : constant Boolean := Rec_Res'Length = Iter_Res'Length;
@@ -166,10 +166,10 @@ begin
    Put_Line ("TEST 9 — Mask Variant Invariants");
    declare
       Points : constant Point_Array (1 .. 4) :=
-        ((X => 0.0, Y => 0.0),
+        [(X => 0.0, Y => 0.0),
          (X => 1.0, Y => 10.0),
          (X => 2.0, Y => 0.0),
-         (X => 3.0, Y => 0.0));
+         (X => 3.0, Y => 0.0)];
       Mask : constant Boolean_Array := Simplify_Mask (Points, 2.0);
    begin
       Check ("9.1 Mask length equals input length", Mask'Length = Points'Length);
@@ -181,11 +181,11 @@ begin
    Put_Line ("TEST 10 — Simplify_Indices Variant");
    declare
       Points : constant Point_Array (1 .. 5) :=
-        ((X => 0.0, Y => 0.0),
-         (X => 1.0, Y => 0.01),
+        [(X => 0.0, Y => 0.0),
+         (X => 1.0, Y => 5.0),
          (X => 2.0, Y => 10.0),
-         (X => 3.0, Y => 0.02),
-         (X => 4.0, Y => 0.0));
+         (X => 3.0, Y => 5.0),
+         (X => 4.0, Y => 0.0)];
       Indices : constant Index_Array := Simplify_Indices (Points, 0.5);
    begin
       Check ("10.1 Exactly three points kept", Indices'Length = 3);
@@ -197,10 +197,10 @@ begin
    Put_Line ("TEST 11 — Zero Epsilon Invariant");
    declare
       Points : constant Point_Array (1 .. 4) :=
-        ((X => 0.0, Y => 0.0),
+        [(X => 0.0, Y => 0.0),
          (X => 1.0, Y => 1.0),
          (X => 2.0, Y => -1.0),
-         (X => 3.0, Y => 0.0));
+         (X => 3.0, Y => 0.0)];
       Res : constant Point_Array := Simplify (Points, 0.0);
    begin
       Check ("11.1 Zero epsilon retains all non-collinear points", Res'Length = 4);
@@ -233,12 +233,12 @@ begin
    Put_Line ("TEST 13 — Extreme Outlier Rejection with Huge Epsilon");
    declare
       Points : constant Point_Array (1 .. 6) :=
-        ((X => 0.0, Y => 0.0),
+        [(X => 0.0, Y => 0.0),
          (X => 1.0, Y => 50.0),
          (X => 2.0, Y => 100.0),
          (X => 3.0, Y => 20.0),
          (X => 4.0, Y => -10.0),
-         (X => 5.0, Y => 0.0));
+         (X => 5.0, Y => 0.0)];
       Res : constant Point_Array := Simplify (Points, 1000.0);
    begin
       Check ("13.1 Simplification collapses to 2 points under large epsilon", Res'Length = 2);
